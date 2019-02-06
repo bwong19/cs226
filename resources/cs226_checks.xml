@@ -25,10 +25,21 @@
     <module name="TreeWalker">
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
-        <module name="JavadocMethod"/>
-        <module name="JavadocType"/>
-        <module name="JavadocVariable"/>
-        <module name="JavadocStyle"/>
+        <module name="JavadocMethod">
+   <property name="scope" value="protected"/>
+          </module>
+          <module name="JavadocType">
+            <property name="scope" value="protected"/>
+          </module>
+          <module name="JavadocVariable">
+            <property name="scope" value="protected"/>
+          </module>
+          <module name="JavadocStyle">
+            <property name="scope" value="protected"/>
+            <!-- empty tags are not okay -->
+            <property name="checkEmptyJavadoc" value="true"/>
+          </module>
+
 
         <!-- various naming conventions -->
         <module name="ConstantName"/>
