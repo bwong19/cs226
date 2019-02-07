@@ -1,3 +1,4 @@
 classes/
 .idea/
 *.jar
+*.class
