@@ -1,4 +1,6 @@
-/* TODO - Add your name, JHED, and email.
+/* Name: Brandon Wong
+ * JHED: bwong19
+ * Email: bwong19@jhu.edu
  * BasicCounter.java
  */
 
@@ -6,30 +8,31 @@ package hw1;
 
 /** A counter that increments and decrements by 1. */
 public class BasicCounter implements ResetableCounter {
-
+    
+    private int val;
+    
     /** Construct a new BasicCounter. */
     public BasicCounter() {
-        // TODO
+        val = 0;
     }
 
     @Override
     public void reset() {
-        // TODO
+        val = 0;
     }
 
     @Override
     public int value() {
-        // TODO
-        return 0;
+        return val;
     }
 
     @Override
     public void up() {
-        // TODO
+        val++;
     }
 
     @Override
     public void down() {
-        // TODO
+        val--;
     }
 }

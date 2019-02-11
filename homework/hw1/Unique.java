@@ -20,15 +20,9 @@ public final class Unique {
      * @throws IllegalArgumentException if command line argument is invalid.
      */
     public static void main(String[] args) throws IllegalArgumentException {
-        // Limits upper bound on number of command line arguments
-        final int maxArgs = 255;
         
-        if (args.length > maxArgs) {
-            throw new IllegalArgumentException("Too many arguments\n");
-        }
-
-        // Contains unique numbers.
-        int[] uniq = new int[args.length];
+        // Contains all unique numbers.
+        int[] uniq = new int[1];
         // Tracks size of uniq.
         int uniqSize = 0;
         
@@ -41,6 +35,15 @@ public final class Unique {
             catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Not an integer\n");
             }
+
+            // Doubles size of uniq if it is filled
+            if (uniqSize >= uniq.length) {
+                int[] tmpUniq = new int[2 * uniqSize];
+                for (int j = 0; j < uniq.length; ++j) {
+                    tmpUniq[j] = uniq[j];
+                }
+                uniq = tmpUniq;
+            }
             
             // Checks if args[i] has been seen before
             boolean isUnique = true;
@@ -50,6 +53,7 @@ public final class Unique {
                     break;
                 }
             }
+
             // If args[i] has not been seen, add it to uniq
             if (isUnique) {
                 uniq[uniqSize] = tmp;

@@ -1,4 +1,6 @@
-/* TODO - Add your name, JHED, and email.
+/* Name: Brandon Wong
+ * JHED: bwong19
+ * Email: bwong19@jhu.edu
  * TenCounter.java
  */
 
@@ -7,29 +9,32 @@ package hw1;
 /** A counter for powers of 10. */
 public class TenCounter implements ResetableCounter {
 
+    private int val;
+    
     /** Construct a new TenCounter. */
     public TenCounter() {
-        // TODO
+        val = 1;
     }
 
     @Override
     public void reset() {
-        // TODO
+        val = 1;
     }
 
     @Override
     public int value() {
-        // TODO
-        return 0;
+        return val;
     }
 
     @Override
     public void up() {
-        // TODO
+        val *= 10;
     }
 
     @Override
     public void down() {
-        // TODO
+        if (val > 1) {
+            val /= 10;
+        }
     }
 }

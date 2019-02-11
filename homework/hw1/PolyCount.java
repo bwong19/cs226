@@ -1,4 +1,6 @@
-/* TODO - Add your name, JHED, and email.
+/* Name: Brandon Wong
+ * JHED: bwong19
+ * Email: bwong19@jhu.edu
  * PolyCount.java
  */
 
@@ -27,7 +29,23 @@ final class PolyCount {
         int x2 = counter.value();
         assert x2 >= x1;
 
-        // TODO - Make a more comprehensive test of a ResetableCounter
+        // Set of tests for Counters
+        counter.reset();
+        assert x1 == counter.value();
+        
+        int numIncrements = 8;
+        int x3 = counter.value();
+        for (int i = 0; i < numIncrements; ++i) {
+            counter.up();
+            assert counter.value() >= x3;
+            x3 = counter.value();
+        }
+        for (int i = 0; i < numIncrements; ++i) {
+            counter.down();
+            assert counter.value() <= x3;
+            x3 = counter.value();
+        }
+        assert x1 == x3;
     }
 
     /**
@@ -47,5 +65,7 @@ final class PolyCount {
         for (ResetableCounter counter : counters) {
             testAnyCounter(counter);
         }
+
+        System.out.println("All tests passed!");
     }
 }

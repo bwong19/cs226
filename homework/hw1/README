@@ -1,0 +1,49 @@
+Name: Brandon Wong
+JHED: bwong19
+Email: bwong19@jhu.edu
+
+
+Part A: Unique Numbers
+----------------------
+
+1. In my algorithm, I created an array to store all the unique values. Because an upper limit of command line arguments is not specified, this array is initialized to 1 and doubles whenever it is filled. The algorithm then runs through each command line argument. If the argument is not an integer, then it throws an IllegalArgumentException. Otherwise, it runs through each element in the array of unique numbers. If the argument is not in the array, then it is added. The contents of the unique array are then printed.
+
+2. I initially wanted to use a HashMap to store the unique values as keys, but because of the restrictions of the assignment, I was unable to. I also was inclined to check the uniqueness of each argument by comparing it to each previous entry. Although this may be possible, it was more convoluted to me, so I took a different approach.
+
+3. I set up everything in both a Unix environment and IntelliJ, so when I tried to compile and run files in IntelliJ, there were errors regarding configuration files. However, with the IntelliJ setup tutorial on Piazza, I was able to fix my issues.
+
+
+
+Part B: Counter Varieties
+-------------------------
+
+1. Because ResetableCounter extends Counter, ResetableCounter uses all the functions and variables in Counter. In general, when one interface extends another, it includes all the members of the base interface and allows the extended interface to include more members. Both interfaces can be implemented separately.
+
+2. All ResetableCounters are Counters, but Counters are not ResetableCounters because they do not implement the extra functions in ResetableCounter.
+
+3. This allows the method to test all ResetableCounters. Because all of the Counters that need to be tested are implemented ResetableCounters, testAnyCounter() works because of polymorphism.
+
+
+
+Part C: MultiCounter ADT
+------------------------
+
+adt MultiCounter  
+    uses Counter   
+    defines MultiCounter  
+    operations    
+       new: Integer x Integer ---> MultiCounter 
+       up: MultiCounter ---> MultiCounter    
+       down: MultiCounter ---> MultiCounter
+       value: MultiCounter ---> Integer
+    axioms    
+       value(new(s,d)) = s
+       value(up(c)) = value(c) * d
+       value(down(c)) = ceil(value(c) / d)
+
+
+1. Out of the Counter ADTs, Counter is the most abstract. FlexibleCounter and MultiCounter both extend Counter and use its functions. This means that because Counter is the most disambiguated, it can be used as a building block for many other counters, FlexibleCounter and MultiCounter included.
+
+2. A more general purpose ADT would, by intuition, increase the value with the up() function and decrease the value with the down() function. Without these specifications, there may be problems with the value of the counter. For example if the increment factor for a multiplication counter were less than 1 and greater than 0, the up() function would actually decrease the value of the counter and the down() function would increase the value. This is unintuitive. Additionally, having an addition factor of 0 or a multiplication factor of 1, for example, would mean that both up() and down() do not change the value of the counter, which, again, is unintuitive. A more general ADT would thus prevent these types of issues by allowing only for deltas that would increase the counter's value with up() and decrease it with down().
+
+In terms of the constructor for the counter, the user should not need to specify the starting value, delta, and operation. These should be included within classes that implement the more generic purpose counter.
