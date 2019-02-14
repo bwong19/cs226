@@ -1,0 +1,10 @@
+## Part A: Revenge of Unique
+
+1. In dealing with doubling the array capacity, I created a helper function that took in a SimpleArray as a parameter and returned another SimpleArray. Having this process in a separate helper function cleaned up my code and made it Checkstyle compliant. When I doubled the array size, I created a new SimpleArray, initialized to double the original array size. I then looped through each of the elements in the original array and copied it into the new array. At the end of the loop, I returned the new SimpleArray object. In the actual main, I set the original array equal to the return value of the helper function. This made it so that the original array had nothing pointing to it, making it ready for garbage collection.
+
+
+## Part B: Sparse Arrays
+
+1. A SparseArray is useful when most of the entries in an array are the exact same. This prevents memory from being wastefully allocated. For example, if there is an integer array of size 10000, and 9999 of these entries have the value '0' while 1 entry (suppose it has the index 3000) has the value '10', then we are wasting a lot of space storing the 9999 entries. We use a SparseArray to more efficiently store this information. The SparseArray keeps track of an initial value, and all the entries that differ from the inital value. In our example, the SparseArray would store the initial value '0', and it would also store the value and location of the different entry (which are '10' and index 3000, respectively).
+
+2. SparseArray needs to implement Iterator() because SparseArray implements Array, which extends the Iterable interface. The Iterable interface has iterator() as one of its members, and because Iterable is an interface, all its member functions must be implemented. Thus, all implementations of Iterables, which in our case is SparseArray, must implement iterator(). This allows us to actually create an iterator for SparseArray.

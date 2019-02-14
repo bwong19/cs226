@@ -1,4 +1,6 @@
-/* TODO - Add your name, JHED, and email.
+/* Name: Brandon Wong
+ * JHED: bwong19
+ * Email: bwong19@jhu.edu
  * SparseArray.java
  */
 
