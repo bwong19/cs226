@@ -1,13 +1,16 @@
-/* TODO - Add your name, JHED, and email.
+/* Name: Brandon Wong
+ * JHED: bwong19
+ * Email: bwong19@jhu.edu
  * PolyArray.java
  */
 
 package hw2;
 
+import exceptions.IndexException;
 import exceptions.LengthException;
 
 import java.util.ArrayList; // see note in main() below
-
+import java.util.Iterator;
 
 /**
  * Simple polymorphic test framework for arrays.
@@ -21,11 +24,64 @@ public final class PolyArray {
 
     private PolyArray() {}
 
+    /**
+     * AXIOM TESTS
+     */
+
     private static void testNewLength(Array<Integer> a) {
         assert a.length() == LENGTH;
     }
+    
+    private static void testNewGet(Array<Integer> a) {
+        for (int i = 0; i < LENGTH; ++i) {
+            assert a.get(i) == INITIAL;
+        }
+    }
+    
+    private static void testInitialIterator(Array<Integer> a) {
+        Iterator<Integer> it = a.iterator();
+        while (it.hasNext()) {
+            assert it.next() == INITIAL;
+        }
+    }
+    
+    private static void testPutLength(Array<Integer> a) {
+        a.put(LENGTH / 2, INITIAL / 2);
+        assert a.length() == LENGTH;
+    }
 
-    // TODO - Add more axiom tests
+    private static void testSparseIterator(Array<Integer> a) {
+        Iterator<Integer> it = a.iterator();
+        int counter = 0;
+        while (it.hasNext()) {
+            if (counter == LENGTH / 2) {
+                assert it.next() == INITIAL / 2;
+            }
+            else {
+                assert it.next() == INITIAL;
+            }
+            counter++;
+        }
+    }
+
+    private static void testPutAndGet(Array<Integer> a) {
+        for (int i = 0; i < LENGTH; ++i) {
+            a.put(i, INITIAL - 1);
+            assert a.get(i) == INITIAL - 1;
+        }
+    }
+
+    private static void testDenseIterator(Array<Integer> a) {
+        Iterator<Integer> it = a.iterator();
+        while (it.hasNext()) {
+            assert it.next() == INITIAL - 1;
+        }
+    }
+
+
+    /**
+     * EXCEPTION TESTS
+     */
 
     private static void testNewWrongLength() {
         try {
@@ -48,7 +104,126 @@ public final class PolyArray {
         }
     }
 
-    // TODO - Add more exception tests
+    private static void testGetWrongIndex() {
+        try {
+            Array<Integer> a = new SimpleArray<>(LENGTH, INITIAL);
+            int val = a.get(-2);
+            assert false;
+        } catch (IndexException e) {
+            // passed the test, nothing to do
+        }
+        try {
+            Array<Integer> a = new SimpleArray<>(LENGTH, INITIAL);
+            int val = a.get(LENGTH + 100);
+            assert false;
+        } catch (IndexException e) {
+            // passed the test, nothing to do
+        }
+        
+        try {
+            Array<Integer> a = new ListArray<>(LENGTH, INITIAL);
+            int val = a.get(-2);
+            assert false;
+        } catch (IndexException e) {
+            // passed the test, nothing to do
+        }
+        try {
+            Array<Integer> a = new ListArray<>(LENGTH, INITIAL);
+            int val = a.get(LENGTH + 100);
+            assert false;
+        } catch (IndexException e) {
+            // passed the test, nothing to do
+        }
+
+        try {
+            Array<Integer> a = new SparseArray<>(LENGTH, INITIAL);
+            int val = a.get(-2);
+            assert false;
+        } catch (IndexException e) {
+            // passed the test, nothing to do
+        }
+        try {
+            Array<Integer> a = new SparseArray<>(LENGTH, INITIAL);
+            int val = a.get(LENGTH + 100);
+            assert false;
+        } catch (IndexException e) {
+            // passed the test, nothing to do
+        }
+    }
+
+    private static void testPutWrongIndex() {
+        try {
+            Array<Integer> a = new SimpleArray<>(LENGTH, INITIAL);
+            a.put(-2, INITIAL);
+            assert false;
+        } catch (IndexException e) {
+            // passed the test, nothing to do
+        }
+        try {
+            Array<Integer> a = new SimpleArray<>(LENGTH, INITIAL);
+            a.put(LENGTH + 100, INITIAL - 10);
+            assert false;
+        } catch (IndexException e) {
+            // passed the test, nothing to do
+        }
+        
+        try {
+            Array<Integer> a = new ListArray<>(LENGTH, INITIAL);
+            a.put(-2, INITIAL);
+            assert false;
+        } catch (IndexException e) {
+            // passed the test, nothing to do
+        }
+        try {
+            Array<Integer> a = new ListArray<>(LENGTH, INITIAL);
+            a.put(LENGTH + 100, INITIAL - 10);
+            assert false;
+        } catch (IndexException e) {
+            // passed the test, nothing to do
+        }
+
+        try {
+            Array<Integer> a = new SparseArray<>(LENGTH, INITIAL);
+            a.put(-2, INITIAL);
+            assert false;
+        } catch (IndexException e) {
+            // passed the test, nothing to do
+        }
+        try {
+            Array<Integer> a = new SparseArray<>(LENGTH, INITIAL);
+            a.put(LENGTH + 100, INITIAL - 10);
+            assert false;
+        } catch (IndexException e) {
+            // passed the test, nothing to do
+        }
+    }
+
+    private static void testIteratorRemove() {
+        try {
+            Array<Integer> a = new SimpleArray<>(LENGTH, INITIAL);
+            Iterator<Integer> it = a.iterator();
+            it.remove();
+            assert false;
+        } catch (UnsupportedOperationException e) {
+            // passed the test, nothing to do
+        }
+        try {
+            Array<Integer> a = new ListArray<>(LENGTH, INITIAL);
+            Iterator<Integer> it = a.iterator();
+            it.remove();
+            assert false;
+        } catch (UnsupportedOperationException e) {
+            // passed the test, nothing to do
+        }
+        try {
+            Array<Integer> a = new SparseArray<>(LENGTH, INITIAL);
+            Iterator<Integer> it = a.iterator();
+            it.remove();
+            assert false;
+        } catch (UnsupportedOperationException e) {
+            // passed the test, nothing to do
+        }
+    }
 
     /**
      * Run (mostly polymorphic) tests on various array implementations.
@@ -70,12 +245,19 @@ public final class PolyArray {
         // over again! I.e., order matters!
         for (Array<Integer> a: arrays) {
             testNewLength(a);
-            // TODO - Call your axiom test methods
+            testNewGet(a);
+            testInitialIterator(a);
+            testPutLength(a);
+            testSparseIterator(a);
+            testPutAndGet(a);
+            testDenseIterator(a);
         }
 
         // Exception testing. Sadly we have to code each one of these
         // out manually, not even Java's reflection API would help...
         testNewWrongLength();
-        // TODO - Call your exception test methods
+        testGetWrongIndex();
+        testPutWrongIndex();
+        testIteratorRemove();
     }
 }
