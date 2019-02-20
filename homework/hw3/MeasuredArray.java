@@ -12,6 +12,10 @@ import hw2.SimpleArray;
  */
 public class MeasuredArray<T> extends SimpleArray<T> implements Measured<T> {
 
+    // integer variables that keep track of the number of accesses and mutations
+    private int accesses;
+    private int mutations;
+    
     /**
      * Constructor for a MeasuredArray that calls the SimpleArray constructor.
      * @param n The size of the array.
@@ -19,46 +23,54 @@ public class MeasuredArray<T> extends SimpleArray<T> implements Measured<T> {
      */
     public MeasuredArray(int n, T t) {
         super(n, t);
-        // TODO
+        accesses = 0;
+        mutations = 0;
     }
 
     @Override
     public int length() {
-        // TODO
-        return -1;
+        accesses++;
+        return super.length();
     }
 
     @Override
     public T get(int i) {
-        // TODO
-        return null;
+        T t = super.get(i); // stops execution if exception thrown
+        accesses++; // only increments if get(i) doesn't throw an exception
+        return t;
     }
 
     @Override
     public void put(int i, T t) throws IndexException {
-        // TODO
+        super.put(i, t);
+        mutations++;
     }
 
     @Override
     public void reset() {
-        // TODO
+        accesses = 0;
+        mutations = 0;
     }
 
     @Override
     public int accesses() {
-        // TODO
-        return -1;
+        return accesses;
     }
 
     @Override
     public int mutations() {
-        // TODO
-        return -1;
+        return mutations;
     }
 
     @Override
     public int count(T t) {
-        // TODO
-        return 0;
+        int count = 0;
+        for (int i = 0; i < super.length(); ++i) {
+            // each time get(i) is called, automatically increments
+            if (t == this.get(i)) {
+                count++;
+            }
+        }
+        return count;
     }
 }
