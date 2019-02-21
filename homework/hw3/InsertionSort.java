@@ -1,4 +1,8 @@
-/* InsertionSort.java */
+/* Name: Brandon Wong
+ * JHED: bwong19
+ * Email: bwong19@jhu.edu
+ * InsertionSort.java
+ */
 
 package hw3;
 
@@ -15,7 +19,18 @@ public final class InsertionSort<T extends Comparable<T>>
 
     @Override
     public void sort(Array<T> array) {
-        // TODO
+        for (int i = 1; i < array.length(); ++i) {
+            // For every element in the array, we place it in order.
+            // We can start with i = 1 because the first element is
+            // sorted by default.
+            for (int j = 0; j < i; ++j) {
+                if (array.get(j).compareTo(array.get(i)) > 0) {
+                    T temp = array.get(j);
+                    array.put(j, array.get(i));
+                    array.put(i, temp);
+                }
+            }
+        }
     }
 
     @Override

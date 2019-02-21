@@ -1,4 +1,8 @@
-/* BubbleSort.java */
+/* Name: Brandon Wong
+ * JHED: bwong19
+ * Email: bwong19@jhu.edu
+ * BubbleSort.java
+ */
 
 package hw3;
 
@@ -14,7 +18,24 @@ public final class BubbleSort<T extends Comparable<T>>
 
     @Override
     public void sort(Array<T> array) {
-        // TODO
+        for (int i = 0; i < array.length(); ++i) {
+            // swapped determines the quick break
+            boolean swapped = false;
+            for (int j = 0; j < array.length() - 1; ++j) {
+                // if out of order, swap the two values
+                if (array.get(j).compareTo(array.get(j + 1)) > 0) {
+                    T temp = array.get(j);
+                    array.put(j, array.get(j + 1));
+                    array.put(j + 1, temp);
+                    swapped = true;
+                }
+            }
+            // quick break if no swaps were performed
+            if (!swapped) {
+                break;
+            }
+
+        }
     }
 
     @Override

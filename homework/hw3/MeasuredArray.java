@@ -1,4 +1,8 @@
-/* MeasuredArray.java */
+/* Name: Brandon Wong
+ * JHED: bwong19
+ * Email: bwong19@jhu.edu
+ * MeasuredArray.java
+ */
 
 package hw3;
 
@@ -66,7 +70,7 @@ public class MeasuredArray<T> extends SimpleArray<T> implements Measured<T> {
     public int count(T t) {
         int count = 0;
         for (int i = 0; i < super.length(); ++i) {
-            // each time get(i) is called, automatically increments
+            // each time get(i) is called, get(i) internally increments
             if (t == this.get(i)) {
                 count++;
             }

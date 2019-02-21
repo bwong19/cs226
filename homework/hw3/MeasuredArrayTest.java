@@ -1,5 +1,8 @@
-/* MeasuredArrayTest.java */
-
+/* Name: Brandon Wong
+ * JHED: bwong19
+ * Email: bwong19@jhu.edu
+ * MeasuredArrayTest.java
+ */
 
 package hw3;
 
@@ -109,7 +112,7 @@ public class MeasuredArrayTest {
      */
     @Test
     public void testCount() {
-        assertEquals(SIZE + 1, array.count("test"));
+        assertEquals(SIZE, array.count("test"));
     }
 
     /**
