@@ -20,7 +20,15 @@ Email: bwong19@jhu.edu
 
 ## Part C: Analysis of Selection Sort
 
-* Let n = a.length. Lines 1 and 2 perform no operations. Line 3 performs 1 assignment in the beginning, n - 1 comparisons and n - 1 subtraction operations, and n - 1 assignments, for a total of n - 1 comparisons, n assignments, and n - 1 operations. Line 4 makes 1 assignment per iteration, and there are n - 1 iterations, for a total of n - 1 assignments. Line 5 makes 1 assignment and 1 addition operation which happen n - 1 times, and 1 comparison and 1 assignment each time the inner looper is iterated through, which is 1 + 2 + ... + n - 1 = n (n - 1) / 2 iterations; line 5 has a total of (n - 1) + n (n - 1) / 2 assignments, n (n - 1) / 2 comparisons, and n - 1 arithmetic operations. Line 6 has 1 comparison each iteration, for a total of n (n - 1) / 2 comparisons. In the worst case, line 7 has 1 assignment each iteration, for a total of n (n - 1) / 2 assignments. Lines 8 and 9 have no operations. Lines 10 through 12 account for 3 assignments, which each happen once per iteration of the outer loop, for a total of 3 (n - 1) assignments.
+* Let n = a.length.
+* Lines 1 and 2 perform no operations.
+* Line 3 performs 1 assignment in the beginning, n - 1 comparisons and n - 1 subtraction operations, and n - 1 assignments, for a total of n - 1 comparisons, n assignments, and n - 1 operations.
+* Line 4 makes 1 assignment per iteration, and there are n - 1 iterations, for a total of n - 1 assignments.
+* Line 5 makes 1 assignment and 1 addition operation which happen n - 1 times, and 1 comparison and 1 assignment each time the inner looper is iterated through, which is 1 + 2 + ... + n - 1 = n (n - 1) / 2 iterations; line 5 has a total of (n - 1) + n (n - 1) / 2 assignments, n (n - 1) / 2 comparisons, and n - 1 arithmetic operations.
+* Line 6 has 1 comparison each iteration, for a total of n (n - 1) / 2 comparisons.
+* Line 7 (in its worst case) has 1 assignment each iteration, for a total of n (n - 1) / 2 assignments.
+* Lines 8 and 9 have no operations.
+* Lines 10 through 12 account for 3 assignments, which each happen once per iteration of the outer loop, for a total of 3 (n - 1) assignments.
 * Counting the total number of comparisons, we get (n - 1) + n (n - 1) / 2 + n (n - 1) / 2 = (n - 1) + n (n - 1) = (n + 1) (n - 1) = n^2 - 1 comparisons. Therefore, **C(n) = n^2 - 1**.
 * Counting the total number of assignments, we get 2 + n + (n - 1) + (n - 1) + n (n - 1) / 2 + n (n - 1) / 2 + 3 (n - 1) = 3n - 2 + n (n - 1) + 3n - 3 = 6n - 5 + n^2 - n = n^2 + 5n - 5 assignments. Therefore, **A(n) = n^2 + 5n - 5**.
 * Counting the total number of arithmetic operations, we get (n - 1) + (n - 1) = 2n - 2.
