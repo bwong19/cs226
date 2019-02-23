@@ -1,3 +1,6 @@
+// Name: Brandon Wong
+// JHED: bwong19
+// Email: bwong19@jhu.edu
 // Deque226Test.java
 
 package hw4.tests;

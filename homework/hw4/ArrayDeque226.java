@@ -1,3 +1,6 @@
+// Name: Brandon Wong
+// JHED: bwong19
+// Email: bwong19@jhu.edu
 // ArrayDeque226.java
 
 package hw4;
