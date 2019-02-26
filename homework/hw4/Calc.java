@@ -3,7 +3,6 @@
 // Email: bwong19@jhu.edu
 // Calc.java
 
-
 package hw4;
 
 import java.util.Scanner;
@@ -15,6 +14,107 @@ public final class Calc {
     private Calc() {}
 
     /**
+     * Processes the next token according to its value.
+     * @param token The token that is being processed.
+     * @param numbers The integer stack of numbers.
+     * @return true to continue loop, false to break loop.
+     */
+    private static boolean processToken(String token, Stack<Integer> numbers) {
+        if (token.length() > 1) {
+            System.err.println("ERROR: bad token");
+            return true;
+        }
+
+        // reads only if user inputs '?', '.', or '!' and acts accordingly
+        char ch = token.charAt(0);
+        switch (ch) {
+            case '?':
+                System.out.println(numbers);
+                break;
+            case '.':
+                if (!numbers.empty()) {
+                    int t = numbers.top();
+                    numbers.pop();
+                    System.out.println(t);
+                }
+                break;
+            case '!':
+                return false;
+            default:
+                if (isOper(ch)) {
+                    calculate(ch, numbers);
+                }
+                else {
+                    System.err.println("ERROR: bad token");
+                }
+                break;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if argument is an operation.
+     * @param ch Character to be checked.
+     * @return true if character is an operation, false if not
+     */
+    private static boolean isOper(char ch) {
+        return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '%');
+    }
+
+    /**
+     * Calculates and puts result in stack.
+     * @param op Operator.
+     * @param nums Stack of numbers.
+     */
+    private static void calculate(char op, Stack<Integer> nums) {
+        int r;
+        int s;
+
+        // only operates if there are 2 objects in the stack
+        if (!nums.empty()) {
+            r = nums.top();
+            nums.pop();
+        }
+        else {
+            System.err.println("ERROR: not enough arguments");
+            return;
+        }
+        if (!nums.empty()) {
+            s = nums.top();
+            nums.pop();
+        }
+        else {
+            // have to put back r if nothing happens
+            nums.push(r);
+            System.err.println("ERROR: not enough arguments");
+            return;
+        }
+
+
+        switch (op) {
+            case '+':
+                nums.push(s + r);
+                break;
+            case '-':
+                nums.push(s - r);
+                break;
+            case '*':
+                nums.push(s * r);
+                break;
+            case '/':
+                nums.push(s / r);
+                break;
+            case '%':
+                nums.push(s % r);
+                break;
+            default:
+                System.err.println("ERROR: bad token");
+                break;
+        }
+    }
+
+    /**
      * The main function.
      * @param args Not used.
      */
@@ -24,62 +124,19 @@ public final class Calc {
         Stack<Integer> nums = new ArrayStack<>();
 
         // input
-        boolean endLoop = false;
-        while (sc.hasNext() && !endLoop) {
+        while (sc.hasNext()) {
             // creates stack if next token is an integer
             if (sc.hasNextInt()) {
                 nums.push(sc.nextInt());
             }
-            // TODO: resolve the case if argument is of the form "?blah"
             else {
-                char ch = sc.next();
-                switch (ch) {
-                case '?': {
-                    System.out.println(nums);
+                String nxt = sc.next();
+                //System.out.println(nxt);
+
+                if (!processToken(nxt, nums)) {
+                    break;
                 }
-                case '.': {
-                    int n = nums.top();
-                    nums.pop();
-                }
-                case '!': {
-                    endLoop = true;
-                }
-                case '+': {
-                    int result;
-                    int r, s;
-                    r = nums.top();
-                    nums.pop();
-                    s = nums.top();
-                    nums.pop();
-                    result = r + s;
-                    nums.push(result);
-                }
-                case '-': {
-                    int result;
-                    int r, s;
-                    r = nums.top();
-                    nums.pop();
-                    s = nums.top();
-                    nums.pop();
-                    result = r - s;
-                    nums.push(result);
-                }
-                case '*': {
-                    int result;
-                    int r, s;
-                    r = nums.top();
-                    nums.pop();
-                    s = nums.top();
-                    nums.pop();
-                    results = r * s;
-                    nums.push(result);
-                }
-                case '/': {
-                }
-                default: {
-                    
-                }
-                }
+
             }
         }
     }
