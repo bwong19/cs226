@@ -37,6 +37,9 @@ public final class Calc {
                     numbers.pop();
                     System.out.println(t);
                 }
+                else {
+                    System.err.println("ERROR: empty stack");
+                }
                 break;
             case '!':
                 return false;
@@ -103,13 +106,27 @@ public final class Calc {
                 nums.push(s * r);
                 break;
             case '/':
+                if (r == 0) {
+                    System.err.println("ERROR: divide by 0");
+                    nums.push(s);
+                    nums.push(r);
+                    break;
+                }
                 nums.push(s / r);
                 break;
             case '%':
+                if (r == 0) {
+                    System.err.println("ERROR: remainder by 0");
+                    nums.push(s);
+                    nums.push(r);
+                    break;
+                }
                 nums.push(s % r);
                 break;
             default:
                 System.err.println("ERROR: bad token");
+                nums.push(s);
+                nums.push(r);
                 break;
         }
     }
@@ -122,8 +139,23 @@ public final class Calc {
         Scanner sc = new Scanner(System.in);
         
         Stack<Integer> nums = new ArrayStack<>();
-
+        
         // input
+
+        // command-line arguments
+        for (int i = 0; i < args.length; ++i) {
+            try {
+                int t = Integer.parseInt(args[i]);
+                nums.push(t);
+            } 
+            catch (NumberFormatException e) {
+                if (!processToken(args[i], nums)) {
+                    break;
+                }
+            }
+        }
+        
+        // standard input arguments
         while (sc.hasNext()) {
             // creates stack if next token is an integer
             if (sc.hasNextInt()) {
