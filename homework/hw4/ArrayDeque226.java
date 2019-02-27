@@ -54,8 +54,8 @@ public class ArrayDeque226<T> implements Deque226<T> {
 
         // copies elements of the old array into the new one
         for (int i = 0; i < length; ++i) {
-            int index = (this.front + i) % this.arr.length();
-            newArr.put(index, this.arr.get(index));
+            int index = (this.front + i) % this.length;
+            newArr.put(i, this.arr.get(index));
         }
 
         // resets front and back of new array
@@ -70,9 +70,10 @@ public class ArrayDeque226<T> implements Deque226<T> {
             doubleLength();
         }
 
-        int index = (this.front - 1) % this.arr.length();
+        int index = (this.arr.length() + this.front - 1) % this.arr.length();
         this.arr.put(index, t);
         front = index;
+        length++;
     }
 
     @Override
@@ -84,6 +85,7 @@ public class ArrayDeque226<T> implements Deque226<T> {
         int index = (this.back + 1) % this.arr.length();
         this.arr.put(index, t);
         back = index;
+        length++;
     }
 
     @Override

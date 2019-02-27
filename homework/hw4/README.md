@@ -14,3 +14,4 @@ __Errors__
 ## Part B: Hacking Growable Deques
 
 * I initially had trouble determining how to write the toString() method, as I have never used StringBuilder before. However, I looked at ListDeque226.java as a reference and was able to figure it out.
+* When testing insertFront, I encountered an IndexException from SimpleArray. I realized that even though I called the remainder function to find the front of the deque, the remainder function could still return negative integers. I fixed this by adding the length of the array to the number so that the remainder could never be negative.
