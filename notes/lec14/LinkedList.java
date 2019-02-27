@@ -130,14 +130,16 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public boolean last(Position<T> p) throws PositionException {
-        // TODO
-        return false;
+        Node<T> n = this.convert(p);
+        return this.sentinelTail.prev == n;
     }
 
     @Override
     public Position<T> front() throws EmptyException {
-        // TODO
-        return null;
+        if (this.empty()) {
+            throw new EmptyException();
+        }
+        return this.sentinelHead.next;
     }
 
     @Override
@@ -145,7 +147,7 @@ public class LinkedList<T> implements List<T> {
         if (this.empty()) {
             throw new EmptyException();
         }
-        return this.tail;
+        return this.sentinelTail.prev;
     }
 
     @Override
@@ -158,8 +160,10 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public Position<T> previous(Position<T> p) throws PositionException {
-        // TODO
-        return null;
+        if (this.first(p)) {
+            throw new PositionException();
+        }
+        return this.convert(p).prev;
     }
 
     @Override
@@ -168,10 +172,12 @@ public class LinkedList<T> implements List<T> {
         n.data = t;
         n.owner = this;
 
-        n.next = this.sentinelHead.next;
-        this.sentinelHead.next.prev = n;
-        this.sentinelHead.next = n;
-        n.prev = this.sentinelHead;
+        this.insertAfter(this.sentinelHead, t);
+
+//        n.next = this.sentinelHead.next;
+//        this.sentinelHead.next.prev = n;
+//        this.sentinelHead.next = n;
+//        n.prev = this.sentinelHead;
 
         this.length += 1;
         return n;
@@ -224,7 +230,10 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public void remove(Position<T> p) throws PositionException {
-        // TODO
+        Node<T> n = this.convert(p);
+        n.owner = null;
+        n.prev.next = n.next;
+        n.next.prev = n.prev;
     }
 
     @Override
@@ -232,8 +241,11 @@ public class LinkedList<T> implements List<T> {
     throws PositionException {
         Node<T> current = this.convert(p);
         Node<T> n = new Node<T>();
+        n.owner = this;
+        n.data = t;
 
-        // TODO
+        n.next = current;
+        current.prev = n;
 
         return n;
     }
@@ -243,8 +255,11 @@ public class LinkedList<T> implements List<T> {
     throws PositionException {
         Node<T> current = this.convert(p);
         Node<T> n = new Node<T>();
+        n.owner = this;
+        n.data = t;
 
-        // TODO
+        n.next = current.next;
+        n.prev = current.prev;
 
         return n;
     }
