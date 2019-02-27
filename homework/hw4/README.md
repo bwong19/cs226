@@ -12,3 +12,5 @@ __Errors__
 
 
 ## Part B: Hacking Growable Deques
+
+* I initially had trouble determining how to write the toString() method, as I have never used StringBuilder before. However, I looked at ListDeque226.java as a reference and was able to figure it out.
