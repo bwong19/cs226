@@ -189,7 +189,9 @@ public abstract class Deque226Test {
         dequeue.insertFront("five");
 
         dequeue.removeFront();
-        assertEquals(dequeue.front(), "four");
+        dequeue.removeFront();
+        dequeue.removeFront();
+        assertEquals(dequeue.front(), "two");
         assertEquals(dequeue.back(), "one");
     }
 
@@ -205,7 +207,9 @@ public abstract class Deque226Test {
         dequeue.insertBack("five");
 
         dequeue.removeBack();
+        dequeue.removeBack();
+        dequeue.removeBack();
         assertEquals(dequeue.front(), "one");
-        assertEquals(dequeue.back(), "four");
+        assertEquals(dequeue.back(), "two");
     }
 }
