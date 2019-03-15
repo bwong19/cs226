@@ -76,7 +76,11 @@ public class LinkedList<T> implements List<T> {
 
         @Override
         public boolean hasNext() {
-            return this.current != LinkedList.this.sentinelTail;
+            if (this.forward) {
+                return this.current != LinkedList.this.sentinelTail;
+            } else {
+                return this.current != LinkedList.this.sentinelHead;
+            }
         }
     }
 
@@ -162,7 +166,7 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public Position<T> previous(Position<T> p) throws PositionException {
-        if (this.last(p)) {
+        if (this.first(p)) {
             throw new PositionException();
         }
         return this.convert(p).prev;

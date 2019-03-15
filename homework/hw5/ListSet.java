@@ -4,45 +4,78 @@ import java.util.Iterator;
 
 /**
  * Set implemented using our abstract List, with a LinkedList.
- *
- * TODO: write the missing method bodies below.
- *
  * @param <T> Element type.
  */
 public class ListSet<T> implements Set<T> {
 
+    /**
+     * List of elements.
+     */
     protected List<T> list;
 
+    /**
+     * Constructor for ListSet.
+     */
     public ListSet() {
-        // TODO
+        list = new LinkedList<T>();
+    }
+
+    /**
+     * Helper method to find the position of t.
+     * @param t Value to find.
+     * @return the position of the value found.
+     */
+    public Position<T> find(T t) {
+        if (this.list.empty()) {
+            return null;
+        }
+
+        Position<T> cur = this.list.front();
+
+        while (!this.list.last(cur)) {
+            if (cur.get().equals(t)) {
+                return cur;
+            }
+            cur = this.list.next(cur);
+        }
+
+        if (!cur.get().equals(t)) {
+            return null;
+        }
+        return cur;
     }
 
     @Override
     public void insert(T t) {
-        // TODO
+        if (this.find(t) != null) {
+            return;
+        }
+        this.list.insertBack(t);
     }
 
     @Override
     public void remove(T t) {
-        // TODO
+        Position<T> p = this.find(t);
+
+        if (p == null) {
+            return;
+        }
+        this.list.remove(p);
     }
 
     @Override
     public boolean has(T t) {
-        // TODO
-        return false;
+        return this.find(t) != null;
     }
 
     @Override
     public int size() {
-        // TODO
-        return 0;
+        return this.list.length();
     }
 
     @Override
     public Iterator<T> iterator() {
-        // TODO
-        return null;
+        return this.list.iterator();
     }
 
 }
