@@ -193,10 +193,10 @@ public class BinarySearchTreeMap<K extends Comparable<? super K>, V>
         // private remove() method cannot return that in addition to the new
         // root. If we had been smarter and used a void return type, we would
         // not need to do this extra work.
-        Node n = this.find(k);
+        V v = this.findForSure(k).value;
         this.root = this.remove(this.root, k);
         this.size -= 1;
-        return n.value;
+        return v;
     }
 
     // Recursively add keys from subtree rooted at given node
