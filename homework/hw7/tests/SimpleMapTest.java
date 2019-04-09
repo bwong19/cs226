@@ -6,7 +6,7 @@ import hw7.SimpleMap;
 /**
  * Testing implementation of SimpleMap.
  */
-public abstract class SimpleMapTest extends MapTest {
+public class SimpleMapTest extends MapTest {
     @Override
     protected Map<String, Integer> createMap() {
         return new SimpleMap<>();

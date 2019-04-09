@@ -22,12 +22,14 @@ public class AvlTreeMap<K extends Comparable<? super K>, V>
         Node right;
         K key;
         V value;
+        int height;
 
         // Constructor to make node creation easier to read.
         Node(K k, V v) {
             // left and right default to null
             this.key = k;
             this.value = v;
+            this.height = 0;
         }
 
         // Just for debugging purposes.
@@ -100,6 +102,97 @@ public class AvlTreeMap<K extends Comparable<? super K>, V>
         return n.value;
     }
 
+    /**
+     * Returns height of the node.
+     * @param n the desired Node
+     * @return the height
+     */
+    private int height(Node n) {
+        if (n == null) {
+            return 0;
+        }
+        return n.height;
+    }
+
+    /**
+     * Calculates the balance factor of a Node.
+     * Possible values are -2, -1, 0, 1, 2.
+     * @param n the desired Node
+     * @return the balance factor
+     */
+    private int balanceFactor(Node n) {
+        if (n == null) {
+            return 0;
+        }
+        return height(n.left) - height(n.right);
+    }
+
+    /**
+     * Determines the larger of two integers.
+     * @param a the first integer
+     * @param b the second integer
+     * @return the larger of the two integers
+     */
+    private int larger(int a, int b) {
+        if (a > b) {
+            return a;
+        }
+        return b;
+    }
+
+    private Node singleRight(Node n) {
+        Node temp = n.left;
+        n.left = temp.right;
+        temp.right = n;
+
+        n.height = larger(height(n.left) + 1, height(n.right) + 1);
+        temp.height = larger(height(temp.left) + 1, height(temp.right) + 1);
+
+        return temp;
+    }
+
+    private Node singleLeft(Node n) {
+        Node temp = n.right;
+        n.right = temp.left;
+        temp.left = n;
+
+        n.height = larger(height(n.left) + 1, height(n.right) + 1);
+        temp.height = larger(height(temp.left) + 1, height(temp.right) + 1);
+
+        return temp;
+    }
+
+    private Node doubleLR(Node n) {
+        return singleRight(singleLeft(n));
+    }
+
+    private Node doubleRL(Node n) {
+        return singleLeft(singleRight(n));
+    }
+
+    /**
+     * Balances a Node if unbalanced.
+     * @param n the Node to be balanced
+     * @return the Node after balancing
+     */
+    private Node balance(Node n) {
+        if (balanceFactor(n) == 2) {
+            if (balanceFactor(n) >= 0) {
+                return singleRight(n);
+            } else {
+                return doubleLR(n);
+            }
+        } else if (balanceFactor(n) == -2) {
+            if (balanceFactor(n) <= 0) {
+                return singleLeft(n);
+            } else {
+                return doubleRL(n);
+            }
+        } else {
+            return n;
+        }
+    }
+
     // Insert given key and value into subtree rooted
     // at given node; return changed subtree with new
     // node added. (Doing this recursively makes it
@@ -118,7 +211,9 @@ public class AvlTreeMap<K extends Comparable<? super K>, V>
             throw new IllegalArgumentException("duplicate key " + k);
         }
 
-        return n;
+        n.height = larger(height(n.left), height(n.right)) + 1;
+
+        return balance(n);
     }
 
     @Override
