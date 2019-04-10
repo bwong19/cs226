@@ -1,5 +1,7 @@
 package hw7;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -19,9 +21,13 @@ public final class Words {
      * Main method.
      * @param args Command line arguments (ignored).
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         data = new SimpleMap<String, Integer>();
+        File file = new File("lorem100000.in");
         Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(file);
+
+        long start = System.currentTimeMillis();
 
         while (scanner.hasNextLine()) {
             String s = scanner.nextLine();
@@ -46,5 +52,12 @@ public final class Words {
         for (String word: data) {
             System.out.println(word + ": " + data.get(word));
         }
+
+        long end = System.currentTimeMillis();
+
+        double time = (end - start) / (double) 1000;
+
+        System.out.println();
+        System.out.println("time: " + time + " seconds");
     }
 }

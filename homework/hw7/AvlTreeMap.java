@@ -156,8 +156,8 @@ public class AvlTreeMap<K extends Comparable<? super K>, V>
         n.right = temp.left;
         temp.left = n;
 
-        n.height = larger(height(n.left) + 1, height(n.right) + 1);
-        temp.height = larger(height(temp.left) + 1, height(temp.right) + 1);
+        n.height = larger(height(n.left), height(n.right)) + 1;
+        temp.height = larger(height(temp.left), height(temp.right)) + 1;
 
         return temp;
     }
@@ -253,7 +253,13 @@ public class AvlTreeMap<K extends Comparable<? super K>, V>
             n = this.remove(n);
         }
 
-        return n;
+        if (n == null) {
+            return n;
+        }
+
+        root.height = larger(height(root.left), height(root.right)) + 1;
+
+        return balance(n);
     }
 
     // Remove given node and return the remaining tree.
