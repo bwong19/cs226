@@ -1,5 +1,6 @@
 package hw8;
 
+import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -12,7 +13,7 @@ import java.util.NoSuchElementException;
 public class HashMap<K, V> implements Map<K, V> {
 
     // Entry pairs up a key and a value.
-    private class Entry<K, V> {
+    private class Entry {
         K key;
         V value;
 
@@ -22,7 +23,7 @@ public class HashMap<K, V> implements Map<K, V> {
         }
     }
 
-    private Entry<K, V>[] data;
+    private Entry[] data;
     private int size;
     private int capacityIndex;
     private int[] capacities = new int[]{2, 5, 11, 23, 47, 97, 197, 397,
@@ -36,7 +37,7 @@ public class HashMap<K, V> implements Map<K, V> {
     public HashMap() {
         capacityIndex = 0;
         size = 0;
-        this.data = (Entry<K, V>[]) new Entry[2];
+        this.data = (Entry[]) Array.newInstance(Entry.class, 2);
     }
 
     // gets capacity
@@ -58,7 +59,8 @@ public class HashMap<K, V> implements Map<K, V> {
         int oldCapacity = this.capacity();
 
         capacityIndex++;
-        Entry[] temp = new Entry[this.capacity()];
+        Entry[] temp = (Entry[])
+                Array.newInstance(Entry.class, this.capacity());
         for (int i = 0; i < oldCapacity; ++i) {
             if (this.data[i] == null) {
                 continue;
@@ -115,7 +117,7 @@ public class HashMap<K, V> implements Map<K, V> {
     @Override
     public void insert(K k, V v) {
         if (k == null) {
-            throw new NullPointerException("cannot insert null key");
+            throw new IllegalArgumentException("cannot handle null key");
         }
         if (this.has(k)) {
             throw new IllegalArgumentException("duplicate key " + k);
@@ -127,7 +129,7 @@ public class HashMap<K, V> implements Map<K, V> {
         for (int i = 0; i < this.capacity(); ++i) {
             code = (init + (int) Math.pow(i, 2)) % this.capacity();
             if (this.data[code] == null) {
-                this.data[code] = new Entry<>(k, v);
+                this.data[code] = new Entry(k, v);
                 break;
             }
         }
@@ -140,12 +142,11 @@ public class HashMap<K, V> implements Map<K, V> {
     @Override
     public V remove(K k) {
         Entry e = this.findForSure(k);
-        V v = (V) e.value;
+        V v = e.value;
         e.key = null;
         e.value = null;
-        e = null;
         size--;
-        return null;
+        return v;
     }
 
     @Override
@@ -157,7 +158,7 @@ public class HashMap<K, V> implements Map<K, V> {
     @Override
     public V get(K k) {
         Entry e = this.findForSure(k);
-        return (V) e.value;
+        return e.value;
     }
 
     @Override
@@ -183,8 +184,10 @@ public class HashMap<K, V> implements Map<K, V> {
             if (!this.hasNext()) {
                 throw new NoSuchElementException("Cannot get next element.");
             }
-            while (HashMap.this.data[this.i] == null) {
-                this.i++;
+            while ((HashMap.this.data[this.i] == null ||
+                    HashMap.this.data[this.i].key == null) &&
+                    i < HashMap.this.capacity()) {
+                this.i += 1;
             }
             this.n++;
             int retEle = this.i;

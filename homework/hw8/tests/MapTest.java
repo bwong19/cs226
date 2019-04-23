@@ -1,16 +1,15 @@
 package hw8.tests;
 
 import hw8.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Testing various implementations of the Map interface.
@@ -63,7 +62,7 @@ public abstract class MapTest {
         map.insert("b", 2);
         map.insert("c", 3);
         assertEquals(3, map.size());
-        assertEquals("{c: 3, a: 1, b: 2}", map.toString());
+        assertEquals("{a: 1, b: 2, c: 3}", map.toString());
     }
 
     /**
@@ -91,7 +90,7 @@ public abstract class MapTest {
 
         map.remove("a");
         assertEquals(2, map.size());
-        assertEquals("{c: 3, b: 2}", map.toString());
+        assertEquals("{b: 2, c: 3}", map.toString());
 
         map.remove("b");
         assertEquals(1, map.size());
@@ -114,15 +113,15 @@ public abstract class MapTest {
 
         map.put("a", 11);
         assertEquals(3, map.size());
-        assertEquals("{c: 3, a: 11, b: 2}", map.toString());
+        assertEquals("{a: 11, b: 2, c: 3}", map.toString());
 
         map.put("b", 22);
         assertEquals(3, map.size());
-        assertEquals("{c: 3, a: 11, b: 22}", map.toString());
+        assertEquals("{a: 11, b: 22, c: 3}", map.toString());
 
         map.put("c", 33);
         assertEquals(3, map.size());
-        assertEquals("{c: 33, a: 11, b: 22}", map.toString());
+        assertEquals("{a: 11, b: 22, c: 33}", map.toString());
     }
 
     /**
@@ -167,11 +166,11 @@ public abstract class MapTest {
         Iterator<String> it = map.iterator();
 
         assertTrue(it.hasNext());
-        assertEquals(it.next(), "c");
-        assertTrue(it.hasNext());
         assertEquals(it.next(), "a");
         assertTrue(it.hasNext());
         assertEquals(it.next(), "b");
+        assertTrue(it.hasNext());
+        assertEquals(it.next(), "c");
         assertFalse(it.hasNext());
     }
 
@@ -219,7 +218,6 @@ public abstract class MapTest {
     @Test (expected = IllegalArgumentException.class)
     public void invalidGet() {
         map.insert("a", 1);
-        assertEquals(1, map.size());
         map.insert("b", 2);
         map.insert("c", 3);
         assertEquals(3, map.size());
