@@ -93,6 +93,9 @@ public class SparseGraph<V, E> implements Graph<V, E> {
 
     // Converts the vertex back to a VertexNode to use internally
     private VertexNode<V> convert(Vertex<V> v) throws PositionException {
+        if (v == null) {
+            throw new PositionException();
+        }
         try {
             VertexNode<V> gv = (VertexNode<V>) v;
             this.checkOwner(gv);
@@ -104,6 +107,9 @@ public class SparseGraph<V, E> implements Graph<V, E> {
 
     // Converts and edge back to a EdgeNode to use internally
     private EdgeNode<E> convert(Edge<E> e) throws PositionException {
+        if (e == null) {
+            throw new PositionException();
+        }
         try {
             EdgeNode<E> ge = (EdgeNode<E>) e;
             this.checkOwner(ge);
@@ -111,12 +117,17 @@ public class SparseGraph<V, E> implements Graph<V, E> {
         } catch (ClassCastException ex) {
             throw new PositionException();
         }
+
     }
 
     @Override
     public Vertex<V> insert(V v) {
-        Vertex<V> gv = new VertexNode<>(v);
+        if (v == null) {
+            throw new PositionException();
+        }
+        VertexNode<V> gv = new VertexNode<>(v);
         vertices.add(gv);
+        gv.owner = this;
         return gv;
     }
 
@@ -128,15 +139,18 @@ public class SparseGraph<V, E> implements Graph<V, E> {
         if (f.get().equals(t.get())) {
             throw new InsertionException();
         }
-        Edge<E> ge = new EdgeNode<>(f, t, e);
+        EdgeNode<E> ge = new EdgeNode<>(f, t, e);
 
         for (Edge<E> out: f.outgoing) {
             EdgeNode<E> oute = convert(out);
-            if (t.get().equals(oute.to.get())) {
+            if (oute.to.equals(t)) {
                 throw new InsertionException();
             }
         }
-
+        edges.add(ge);
+        f.outgoing.add(ge);
+        t.incoming.add(ge);
+        ge.owner = this;
         return ge;
     }
 
@@ -147,7 +161,9 @@ public class SparseGraph<V, E> implements Graph<V, E> {
         if (!gv.incoming.isEmpty() || !gv.outgoing.isEmpty()) {
             throw new RemovalException();
         }
-
+        if (!vertices.contains(gv)) {
+            throw new PositionException();
+        }
         vertices.remove(gv);
 
         return gv.get();
@@ -156,22 +172,36 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     @Override
     public E remove(Edge<E> e) throws PositionException {
         EdgeNode<E> ge = convert(e);
-
+        if (!edges.contains(ge)) {
+            throw new PositionException();
+        }
         ge.from.outgoing.remove(ge);
         ge.to.incoming.remove(ge);
         edges.remove(ge);
-        
+
         return ge.get();
     }
 
     @Override
     public Iterable<Vertex<V>> vertices() {
-        return vertices;
+        ArrayList<Vertex<V>> out = new ArrayList<>();
+        for (Vertex<V> vert: this.vertices) {
+            V v = vert.get();
+            out.add(new VertexNode<>(v));
+        }
+        return out;
     }
 
     @Override
     public Iterable<Edge<E>> edges() {
-        return edges;
+        ArrayList<Edge<E>> out = new ArrayList<>();
+        for (Edge<E> edge: this.edges) {
+            E e = edge.get();
+            VertexNode<V> from = new VertexNode<>(this.from(edge).get());
+            VertexNode<V> to = new VertexNode<>(this.to(edge).get());
+            out.add(new EdgeNode<E>(from, to, e));
+        }
+        return out;
     }
 
     @Override

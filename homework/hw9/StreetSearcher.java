@@ -1,5 +1,4 @@
-package hw9.staff.sln;
-
+package hw9;
 
 import exceptions.InsertionException;
 
@@ -71,7 +70,7 @@ public final class StreetSearcher {
     }
 
 
-    // Djikstra's Algorithm to find shortest path.
+    // Dijkstra's Algorithm to find shortest path.
     private static void findShortestPath(String startName, String endName) {
         Vertex<String> start = vertices.get(startName);
         Vertex<String> end = vertices.get(endName);
@@ -190,6 +189,6 @@ public final class StreetSearcher {
             return;
         }
 
-        findShortestPath(startName, endName);
+        //findShortestPath(startName, endName);
     }
 }
