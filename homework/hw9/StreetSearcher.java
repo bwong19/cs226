@@ -75,22 +75,39 @@ public final class StreetSearcher {
         Vertex<String> start = vertices.get(startName);
         Vertex<String> end = vertices.get(endName);
 
-        double totalDist = -1;  // TODO: update this below
+        double totalDist = -1;
 
-        // TODO - write this!
-        /* 
-           The biggest issue here is how to create and maintain an
-           adaptable priority queue somehow. You do not have to write
-           the most efficient implementation possible. It does need to
-           be correct. You will need to keep track of distances for
-           vertices. Feel free to update the SparseGraph
-           implementation to handle that for you. Another option is to
-           create a nested class here for comparable objects that have
-           vertex info and distance info to use in a standard priority
-           queue.
-        */
+        PriorityQueue<Vertex<String>> pq = new PriorityQueue<>();
+        for (Vertex<String> v: graph.vertices()) {
+            if (v.get().equals(start.get())) {
+                graph.setDist(start, 0);
+            }
+            pq.add(vertices.get(v.get()));
+        }
 
+        while (!pq.isEmpty()) {
+            Vertex<String> from = pq.poll();
+            graph.setFound(from, true);
+            if (from.get().equals(end.get())) {
+                break;
+            }
 
+            for (Edge<String> e: graph.outgoing(from)) {
+                Vertex<String> to = graph.to(e);
+                if (graph.found(to)) {
+                    continue;
+                }
+                if (graph.dist(from) + (double) graph.label(e) <
+                        graph.dist(to)) {
+                    graph.setDist(to, graph.dist(from) + (double)
+                            graph.label(e));
+                    graph.label(to, e);
+                    pq.remove(to);
+                    pq.add(to);
+                }
+            }
+        }
+        totalDist = graph.dist(end);
 
         // These method calls will create and print the path for you
         List<Edge<String>> path = getPath(end, start);
@@ -189,6 +206,6 @@ public final class StreetSearcher {
             return;
         }
 
-        //findShortestPath(startName, endName);
+        findShortestPath(startName, endName);
     }
 }

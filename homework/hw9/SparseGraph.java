@@ -16,18 +16,23 @@ import java.util.List;
 public class SparseGraph<V, E> implements Graph<V, E> {
 
     // Class for a vertex of type V
-    private final class VertexNode<V> implements Vertex<V> {
+    private final class VertexNode<V> implements Vertex<V>,
+            Comparable<VertexNode<V>> {
         V data;
         Graph<V, E> owner;
         List<Edge<E>> outgoing;
         List<Edge<E>> incoming;
         Object label;
+        double dist;
+        boolean found;
 
         VertexNode(V v) {
             this.data = v;
             this.outgoing = new ArrayList<>();
             this.incoming = new ArrayList<>();
             this.label = null;
+            this.dist = Double.MAX_VALUE;
+            this.found = false;
         }
 
         @Override
@@ -38,6 +43,11 @@ public class SparseGraph<V, E> implements Graph<V, E> {
         @Override
         public void put(V v) {
             this.data = v;
+        }
+
+        @Override
+        public int compareTo(VertexNode<V> v) {
+            return Double.compare(this.dist, v.dist);
         }
     }
 
@@ -250,6 +260,46 @@ public class SparseGraph<V, E> implements Graph<V, E> {
     public Object label(Edge<E> e) throws PositionException {
         EdgeNode<E> ge = convert(e);
         return ge.label;
+    }
+
+    /**
+     * Sets distance.
+     * @param v desired vertex
+     * @param d distance to be set
+     */
+    public void setDist(Vertex<V> v, double d) {
+        VertexNode<V> gv = convert(v);
+        gv.dist = d;
+    }
+
+    /**
+     * Gets distance.
+     * @param v desired vertex
+     * @return the distance to the vertex.
+     */
+    public double dist(Vertex<V> v) {
+        VertexNode<V> gv = convert(v);
+        return gv.dist;
+    }
+
+    /**
+     * Sets found.
+     * @param v desired vertex
+     * @param f found to be set
+     */
+    public void setFound(Vertex<V> v, boolean f) {
+        VertexNode<V> gv = convert(v);
+        gv.found = f;
+    }
+
+    /**
+     * Gets found.
+     * @param v desired vertex
+     * @return the distance to the vertex.
+     */
+    public boolean found(Vertex<V> v) {
+        VertexNode<V> gv = convert(v);
+        return gv.found;
     }
 
     @Override
